@@ -1,0 +1,38 @@
+{
+	"name": "backend",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"build": "npm run rm:dist && npm run typescript:build && npm run config:vercel && npm run config:ejs",
+		"config:ejs": "cp -r ./src/views ./dist/views",
+		"config:vercel": "cp ./vercel.json ./dist/vercel.json",
+		"env": "node ./script/generate-env-enum.mjs",
+		"env:watch": "nodemon --watch ./.env --exec npm run env",
+		"rm:dist": "rm -rf ./dist",
+		"sass:watch": "sass ./src/styles/style.scss ./public/css/style.css --watch",
+		"server": "concurrently \"npm run env:watch\" \"npm run sass:watch\" \"npm run server:watch\"",
+		"server:watch": "nodemon --watch ./src -e ts,ejs --exec npm run typescript:server",
+		"server:watch:env": "npm run env && npm run server:watch",
+		"start": "node ./dist/app.js",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"typescript:build": "npx tsc",
+		"typescript:server": "ts-node ./src/app.ts"
+	},
+	"description": "Libreria",
+	"author": "Agustín C",
+	"keywords": [],
+	"license": "ISC",
+	"dependencies": {
+		"express": "^4.19.2",
+		"mysql2": "^3.9.7"
+	},
+	"devDependencies": {
+		"@types/express": "^4.17.21",
+		"@types/node": "^20.12.11",
+		"concurrently": "^8.2.2",
+		"dotenv": "^16.4.5",
+		"nodemon": "^3.1.0",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.4.5"
+	}
+}
