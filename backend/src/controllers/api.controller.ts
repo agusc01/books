@@ -9,7 +9,7 @@ require('dotenv').config();
 const dbError = envConfig(Env.DB_MSG_ERROR);
 
 
-export const AllBooksGET: IHandlerResponse = async (req, res) => {
+export const allBooksGET: IHandlerResponse = async (req, res) => {
     const resp = await getAllBooks();
 
     if (resp.isError) {
