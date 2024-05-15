@@ -17,14 +17,9 @@ app.use(express.urlencoded());
 
 app.use(router('/api'), apiRouter);
 
-// ! Tiene que ser el ante último ruteo
-app.use(async (req: express.Request, res: express.Response) => {
-    return res.status(200).send({ msg: 'Funciona' });
-});
-
 // ! Tiene que ser el último ruteo
 app.use(async (req: express.Request, res: express.Response) => {
-    return res.status(500).send({ msg: 'Página no encontra' });
+    return res.status(500).send({ msg: 'Funciona ! .Página no encontra' });
 });
 
 app.listen(port, () => {
