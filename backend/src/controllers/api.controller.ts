@@ -53,6 +53,14 @@ export const createBooksPOST: IHandlerResponse = async (req, res) => {
 export const updateBookPATCH: IHandlerResponse = async (req, res) => {
 
     const id = req.params.id;
+
+    const respGetBook = await getOneBook(id);
+
+    if (respGetBook.isError) {
+        const error = dbError + (respGetBook.data as string);
+        return res.status(500).send({ error });
+    }
+
     const { price, title, year } = req.body;
     const book: IBook = { price, title, year, img: 'fake-url', id };
 
@@ -69,6 +77,7 @@ export const updateBookPATCH: IHandlerResponse = async (req, res) => {
 
 
 export const deleteBookDELETE: IHandlerResponse = async (req, res) => {
+
     const id = req.params.id;
 
     const respGetBook = await getOneBook(id);
@@ -79,7 +88,6 @@ export const deleteBookDELETE: IHandlerResponse = async (req, res) => {
     }
 
     const respDeleteBook = await deleteOneBook(id);
-    console.log({ respDeteleBook: respDeleteBook });
 
     if (respDeleteBook.isError) {
         const error = dbError + (respDeleteBook.data as string);
