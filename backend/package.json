@@ -4,6 +4,7 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "npm run rm:dist && npm run typescript:build && npm run config:vercel && npm run config:ejs",
+		"build2": "npm run rm:dist && npm run typescript:build",
 		"config:ejs": "cp -r ./src/views ./dist/views",
 		"config:vercel": "cp ./vercel.json ./dist/vercel.json",
 		"env": "node ./script/generate-env-enum.mjs",

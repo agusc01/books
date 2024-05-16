@@ -1,5 +1,6 @@
 
 import express from 'express';
+import { testDataBaseWithSequelice } from './config/db.config';
 import { checkEnvironments, envConfig } from './config/env.config';
 import { Env } from './models/enums/env.enum';
 import { apiRouter } from './router/api.router';
@@ -27,3 +28,5 @@ app.listen(port, () => {
     console.log(`Aplicación corriendo en : ${host}`);
     console.log('-----------------------------------------------------');
 });
+
+testDataBaseWithSequelice();

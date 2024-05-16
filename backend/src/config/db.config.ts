@@ -1,31 +1,33 @@
+import { Sequelize } from 'sequelize';
 import { Env } from "../models/enums/env.enum";
 import { envConfig } from "./env.config";
 
 require('dotenv').config();
-const mysql = require('mysql2');
 
-const pool = mysql.createPool({
+export const sequelize = new Sequelize({
+    dialect: 'mysql',
     host: String(envConfig(Env.DB_HOST)),
-    user: String(envConfig(Env.DB_USER)),
+    port: Number(envConfig(Env.DB_PORT)),
+    username: String(envConfig(Env.DB_USER)),
     password: String(envConfig(Env.DB_PASS)),
     database: String(envConfig(Env.DB_NAME)),
-    port: Number(envConfig(Env.DB_PORT)),
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
 });
 
-pool.getConnection(async (error: any, connection: any) => {
-    if (error) {
-        console.log('\n-----------------------------------------------------');
-        console.error('Error al obtener una conexión:', error);
-        console.log('-----------------------------------------------------\n');
-    } else {
+export const testDataBaseWithSequelice = async () => {
+    try {
+        await sequelize.authenticate();
         console.log('\n-----------------------------------------------------');
         console.log(`Conexión exitosa a la base de datos. PORT: ${envConfig(Env.DB_PORT)}`);
         console.log('-----------------------------------------------------\n');
-        connection.release();
+        await sequelize.sync();
+        console.log('\n-----------------------------------------------------');
+        console.log(`Tablas sincronizadas exitosamente`);
+        console.log('-----------------------------------------------------\n');
+    } catch (error) {
+        console.log('\n-----------------------------------------------------');
+        console.error('Error al conectar a la base de datos:', error);
+        console.log('-----------------------------------------------------\n');
+    } finally {
+        // await sequelize.close();
     }
-});
-
-export const db = pool.promise();
+};
