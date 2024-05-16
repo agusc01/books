@@ -31,7 +31,7 @@ export const oneBookGET: IHandlerResponse = async (req, res) => {
         return res.status(500).send({ error });
     }
 
-    return res.status(200).send({ libro: resp.data[0] });
+    return res.status(200).send({ libro: resp.data });
 };
 
 
@@ -45,7 +45,7 @@ export const createBooksPOST: IHandlerResponse = async (req, res) => {
         return res.status(500).send({ error });
     }
 
-    book.id = (resp.data as any).insertId;
+    // book.id = (resp.data as any).insertId;
     return res.status(201).send({ libro: book });
 };
 
@@ -53,14 +53,6 @@ export const createBooksPOST: IHandlerResponse = async (req, res) => {
 export const updateBookPATCH: IHandlerResponse = async (req, res) => {
 
     const id = req.params.id;
-
-    const respGetBook = await getOneBook(id);
-
-    if (respGetBook.isError) {
-        const error = dbError + (respGetBook.data as string);
-        return res.status(500).send({ error });
-    }
-
     const { price, title, year } = req.body;
     const book: IBook = { price, title, year, img: 'fake-url', id };
 
@@ -79,21 +71,13 @@ export const updateBookPATCH: IHandlerResponse = async (req, res) => {
 export const deleteBookDELETE: IHandlerResponse = async (req, res) => {
 
     const id = req.params.id;
+    const resp = await deleteOneBook(id);
 
-    const respGetBook = await getOneBook(id);
-
-    if (respGetBook.isError) {
-        const error = dbError + (respGetBook.data as string);
+    if (resp.isError) {
+        const error = dbError + (resp.data as string);
         return res.status(500).send({ error });
     }
 
-    const respDeleteBook = await deleteOneBook(id);
-
-    if (respDeleteBook.isError) {
-        const error = dbError + (respDeleteBook.data as string);
-        return res.status(500).send({ error });
-    }
-
-    return res.status(200).send({ libro: respGetBook.data[0] });
+    return res.status(200).send({ libro: resp.data });
 }
 

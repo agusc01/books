@@ -20,13 +20,10 @@ export const getAllBooks = async (): Promise<IResponseDb<IBook[] | string>> => {
     } catch (e: any) {
         const msg = parseMsg(e?.message as string);
         return { isError: true, data: `${msg_error_read} ${msg}.` };
-    } finally {
-        // README: investigar porque no hay que utilizarlo
-        // await conn.release();
-    }
+    } finally { }
 };
 
-export const getOneBook = async (id: string): Promise<IResponseDb<IBook[] | string>> => {
+export const getOneBook = async (id: string): Promise<IResponseDb<IBook | string>> => {
     try {
         const query = `SELECT * FROM ${table} WHERE id = ?;`;
         const [rows] = await db.query(query, [id]);
@@ -35,23 +32,15 @@ export const getOneBook = async (id: string): Promise<IResponseDb<IBook[] | stri
             throw new Error(`El libro con el id ${id} no existe`);
         }
 
-        // README: no debería pasar ... 
-        if ((rows as IBook[]).length > 1) {
-            throw new Error(`Existe más de un libro con el id ${id}`);
-        }
-
-        return { isError: false, data: rows };
+        return { isError: false, data: rows[0] };
     } catch (e: any) {
         const msg = parseMsg(e?.message as string);
         return { isError: true, data: `${msg_error_read} ${msg}.` };
-    } finally {
-        // README: investigar porque no hay que utilizarlo
-        // await conn.release();
-    }
+    } finally { }
 };
 
 
-export const saveOnebook = async ({ img, price, title, year }: IBook): Promise<IResponseDb<IBook[] | string>> => {
+export const saveOnebook = async ({ img, price, title, year }: IBook): Promise<IResponseDb<IBook | string>> => {
     try {
         const atributes = envConfig(Env.DB_TABLE_BOOKS_ATRIBUTES);
         const query = `INSERT INTO ${table} ${atributes} VALUES (?,?,?,?);`;
@@ -60,40 +49,43 @@ export const saveOnebook = async ({ img, price, title, year }: IBook): Promise<I
     } catch (e: any) {
         const msg = parseMsg(e?.message as string);
         return { isError: true, data: `${msg_error_create} ${msg}.` };
-    } finally {
-        // README: investigar porque no hay que utilizarlo
-        // await conn.release();
-    }
+    } finally { }
 };
 
 
-export const updateOneBook = async ({ img, price, title, year, id }: IBook): Promise<IResponseDb<IBook[] | string>> => {
+export const updateOneBook = async ({ img, price, title, year, id }: IBook): Promise<IResponseDb<IBook | string>> => {
     try {
+
+        if (!id) { throw new Error(`Se necesita el ID`); }
+        const resp = (await getOneBook(id));
+        if (resp.isError) { throw new Error(resp.data as string); }
+
         const query = `UPDATE ${table} SET img = ? , price = ? , title = ? , year = ? WHERE id = ?;`;
         const [rows] = await db.query(query, [img, price, title, year, id]);
         return { isError: false, data: rows };
+
     } catch (e: any) {
         const msg = parseMsg(e?.message as string);
         return { isError: true, data: `${msg_error_update} ${msg}.` };
-    } finally {
-        // README: investigar porque no hay que utilizarlo
-        // await conn.release();
-    }
+    } finally { }
 };
 
 
-export const deleteOneBook = async (id: string): Promise<IResponseDb<IBook[] | string>> => {
+export const deleteOneBook = async (id: string): Promise<IResponseDb<IBook | string>> => {
     try {
+
+        if (!id) { throw new Error(`Se necesita el ID`); }
+        const resp = (await getOneBook(id));
+        if (resp.isError) { throw new Error(resp.data as string); }
+
         const query = `DELETE FROM ${table} WHERE id = ?;`;
         const [rows] = await db.query(query, id);
-        return { isError: false, data: rows };
+        return { isError: false, data: resp.data };
+
     } catch (e: any) {
         const msg = parseMsg(e?.message as string);
         return { isError: true, data: `${msg_error_delete} ${msg}.` };
-    } finally {
-        // README: investigar porque no hay que utilizarlo
-        // await conn.release();
-    }
+    } finally { }
 };
 
 
