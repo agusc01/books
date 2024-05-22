@@ -1,0 +1,10 @@
+<script>
+    (()=>{
+        let newHref = '<%- JSON.stringify(locals.newHref)%>';
+        if(!newHref) { return; }
+        newHref = JSON.parse(newHref);
+        if(typeof newHref !== 'string') { return; }
+        history.pushState(null, '', newHref);
+        '<%- locals.newHref = null %>'
+    })();
+</script>

@@ -1,0 +1,30 @@
+<div class="col col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
+    <article class="card mb-3 card-book">
+        <div class="d-flex align-items-center p-3">
+            <img 
+                src="<%= book.img %>" 
+                class="img-fluid mr-3 card-book__img d-none" 
+                alt="book cover img">
+            <div class="text-start ms-2">
+                <h5 class="text-info"><%= book.title %></h5>
+                <p class="mb-0">Año: <%= book.year %></p>
+                <p class="mb-0">Precio: $<%= book.price %></p>
+                <a href="/libro/modificar/<%= book.id %>" class="btn btn-info">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                <form 
+                    action="/libro/eliminar/<%= book.id %>?_method=DELETE"
+                    method="POST"
+                    class="d-inline"
+                    >
+                    <button 
+                        type="submit"
+                        class="btn btn-danger"
+                    >
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </article>
+</div>

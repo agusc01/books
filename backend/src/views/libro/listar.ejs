@@ -1,0 +1,15 @@
+<%- include('./../partials/header') %>
+
+<main class="main">
+    <div class="container">
+        <h1 class="text-info">Lista de Libros</h1>
+            <div class="row">
+                <% books.forEach( (book,index) => { %>
+                    <%- include('./../components/card-book', { book: book }) %>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+</main>
+
+<%- include('./../partials/footer') %>

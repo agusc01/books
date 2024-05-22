@@ -1,0 +1,13 @@
+<script>
+    (async ()=>{
+        let alerts = '<%- JSON.stringify(locals.alerts)%>';
+        if(!alerts){ return; }
+        alerts = JSON.parse(alerts);
+        if (alerts && alerts?.length > 0) {
+            for (let i = 0; i < alerts.length; i++) {
+                await alertText(alerts[i]);
+            }
+        }
+        '<%- locals.alerts = null %>'
+    })();
+</script>

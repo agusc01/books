@@ -8,7 +8,7 @@ require('dotenv').config();
 const dbError = envConfig(Env.DB_MSG_ERROR);
 
 
-export const allBooksGET: IHandlerResponse = async (req, res) => {
+export const apiAllBooksGET: IHandlerResponse = async (req, res) => {
     const resp = await getAllBooks();
 
     if (resp.isError) {
@@ -20,7 +20,7 @@ export const allBooksGET: IHandlerResponse = async (req, res) => {
 };
 
 
-export const oneBookGET: IHandlerResponse = async (req, res) => {
+export const apiOneBookGET: IHandlerResponse = async (req, res) => {
 
     const id = req.params.id;
     const resp = await getOneBook(id);
@@ -34,7 +34,7 @@ export const oneBookGET: IHandlerResponse = async (req, res) => {
 };
 
 
-export const createBooksPOST: IHandlerResponse = async (req, res) => {
+export const apiCreateBooksPOST: IHandlerResponse = async (req, res) => {
 
     if (!req.body.img) { req.body.img = 'fake-url'; }
     const resp = await saveOnebook(req.body);
@@ -48,7 +48,7 @@ export const createBooksPOST: IHandlerResponse = async (req, res) => {
 };
 
 
-export const updateBookPATCH: IHandlerResponse = async (req, res) => {
+export const apiUpdateBookPATCH: IHandlerResponse = async (req, res) => {
 
     if (!req.body.img) { req.body.img = 'fake-url'; }
     req.body.id = req.params.id;
@@ -63,7 +63,7 @@ export const updateBookPATCH: IHandlerResponse = async (req, res) => {
 };
 
 
-export const deleteBookDELETE: IHandlerResponse = async (req, res) => {
+export const apiDeleteBookDELETE: IHandlerResponse = async (req, res) => {
 
     const id = req.params.id;
     const book = await deleteOneBook(id);
@@ -74,5 +74,4 @@ export const deleteBookDELETE: IHandlerResponse = async (req, res) => {
     }
 
     return res.status(200).send({ libro: book.data });
-}
-
+};

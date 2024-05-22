@@ -1,0 +1,24 @@
+main {
+	min-width: 100wh;
+	min-height: 100vh;
+}
+
+.main {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.cursor {
+	cursor: pointer;
+}
+
+.dropdown-item {
+	cursor: pointer;
+}
+
+.form-floating {
+	& label {
+		text-transform: capitalize;
+	}
+}
