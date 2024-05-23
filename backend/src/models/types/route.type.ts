@@ -1,6 +1,7 @@
 export type Route =
     '/'
     | '/404'
+    | '/home'
     | '/api'
     | '/libro'
     | '/auth'

@@ -2,7 +2,11 @@ import { IHandlerResponse } from '../models/interfaces/handler-response.interfac
 import { router } from '../utils/router.util';
 
 export const errorGet: IHandlerResponse = async (req, res) => {
-    res.render(router('404'), {
+    return res.render(router('404'), {
         view: { title: 'Libros | Página no encontrada' }
     });
+};
+
+export const errorAPI: IHandlerResponse = async (req, res) => {
+    return res.status(500).send({ msg: 'Libros | Página no encontrada' });
 };

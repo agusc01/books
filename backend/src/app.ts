@@ -3,7 +3,7 @@ import express from 'express';
 import path from 'path';
 import { testDataBaseWithSequelice } from './config/db.config';
 import { checkEnvironments, envConfig } from './config/env.config';
-import { errorGet } from './controllers/error.controller';
+import { errorAPI, errorGet } from './controllers/error.controller';
 import { isLoggedGuard } from './guards/is-logged.guard';
 import { Env } from './models/enums/env.enum';
 import { apiRouter } from './router/api.router';
@@ -49,16 +49,15 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(router('/home'), async (req: express.Request, res: express.Response) => {
+    return res.render(router('home'), { view: { title: "Libros | Home", }, });
+});
 app.use(router('/api'), apiRouter);
 app.use(router('/libro'), isLoggedGuard, bookRouter);
 app.use(router('/auth'), authRouter);
 
-
-// * ULTIMO RUTEO
-app.use(router('/api'), async (req: express.Request, res: express.Response) => {
-    return res.status(500).send({ msg: 'Libros | Página no encontrada' });
-});
-
+// * ERRORS
+app.use(router('/api'), errorAPI);
 app.use(errorGet);
 
 app.listen(port, () => {
