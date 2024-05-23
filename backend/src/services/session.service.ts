@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 import { envConfig } from "../config/env.config";
 import { Env } from "../models/enums/env.enum";
 
@@ -19,9 +19,3 @@ export const sessionGetLogged = (req: Request): boolean => {
     return (req as any).session.isLogged;
 };
 
-export const localsSetLogged = (res: Response, isLogged: boolean): void => {
-    res.locals.isLogged = isLogged;
-};
-export const localsGetLogged = (res: Response): void => {
-    return res.locals.isLogged;
-};

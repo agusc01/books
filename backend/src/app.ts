@@ -9,7 +9,8 @@ import { Env } from './models/enums/env.enum';
 import { apiRouter } from './router/api.router';
 import { authRouter } from './router/auth.router';
 import { bookRouter } from './router/book.router';
-import { initSession, localsSetLogged, sessionGetLogged } from './services/session.service';
+import { localsSetLogged } from './services/locals.service';
+import { initSession, sessionGetLogged } from './services/session.service';
 import { router } from './utils/router.util';
 
 const methodOverride = require('method-override');
