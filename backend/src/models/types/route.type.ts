@@ -1,4 +1,4 @@
-export type Route =
+export type TRoute =
     '/'
     | '/404'
     | '/home'

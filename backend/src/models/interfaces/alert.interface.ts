@@ -1,6 +1,8 @@
+import { TSweet } from "../types/sweet.type";
+
 export interface IAlert {
     title?: string;
     text: string;
-    type: 'error' | 'success' | 'warning' | 'info' | 'question';
+    type: TSweet;
     timer?: number;
 }

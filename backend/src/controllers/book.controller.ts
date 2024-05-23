@@ -1,7 +1,7 @@
 import { envConfig } from '../config/env.config';
 import { Env } from '../models/enums/env.enum';
 import { IHandlerResponse } from '../models/interfaces/handler-response.interface';
-import { ValidRouter } from '../models/types/valid-router.type';
+import { TValidRouter } from '../models/types/valid-router.type';
 import { deleteOneBook, getAllBooks, getOneBook, saveOneBook, updateOneBook } from '../services/book.service';
 import { renderTo } from '../utils/renderTo.util';
 import { router } from '../utils/router.util';
@@ -29,7 +29,7 @@ export const listBooksGET: IHandlerResponse = async (req, res) => {
 
 export const createBookGET: IHandlerResponse = async (req, res) => {
 
-    const path: ValidRouter = '/libro/crear';
+    const path: TValidRouter = '/libro/crear';
     return res.render(router('libro/crear'), {
         view: { title: "Libros | Crear", },
         book: {},
@@ -63,7 +63,7 @@ export const updateBookGET: IHandlerResponse = async (req, res) => {
         return renderTo(req, res, '/libro/listar');
     }
 
-    const path = ('/libro/modificar' as ValidRouter) + '/' + id + '?_method=PUT';
+    const path = ('/libro/modificar' as TValidRouter) + '/' + id + '?_method=PUT';
     return res.render(router('libro/crear'), {
         view: { title: "Libros | Modifcar", },
         typeOfAction: 'Modificar',
@@ -98,7 +98,7 @@ export const deleteBookConfirmationDELETE: IHandlerResponse = async (req, res) =
         return renderTo(req, res, '/libro/listar');
     }
 
-    const deleteBookPath: ValidRouter = '/libro/eliminar';
+    const deleteBookPath: TValidRouter = '/libro/eliminar';
 
     setConfirm(res, [{
         type: 'question',

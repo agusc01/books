@@ -1,8 +1,8 @@
-import { Route } from "./route.type";
+import { TRoute } from "./route.type";
 
 
-export type ValidRouter =
-    Route extends `${string}/${infer R}`
+export type TValidRouter =
+    TRoute extends `${string}/${infer R}`
     ? R | `/${R}` | `./${R}`
     : '';
 

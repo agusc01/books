@@ -2,13 +2,13 @@ import { Request, Response } from "express";
 import { loginGET } from "../controllers/auth.controller";
 import { createBookGET, listBooksGET, updateBookGET } from "../controllers/book.controller";
 import { errorGet } from "../controllers/error.controller";
-import { ValidRouter } from "../models/types/valid-router.type";
+import { TValidRouter } from "../models/types/valid-router.type";
 import { setNewHref } from "./scripts.util";
 
-export const renderTo = (req: Request, res: Response, validRouter: ValidRouter): void => {
+export const renderTo = (req: Request, res: Response, validRouter: TValidRouter): void => {
 
     // * Sacar parametros
-    validRouter = validRouter.split("?")[0] as ValidRouter;
+    validRouter = validRouter.split("?")[0] as TValidRouter;
 
     // * Sacar numeros (posibles ID)
     /*
@@ -18,7 +18,7 @@ export const renderTo = (req: Request, res: Response, validRouter: ValidRouter):
         \d+ coincide con uno o más dígitos.
         $ asegura que la coincidencia esté al final de la cadena. 
     */
-    validRouter = validRouter.replace(/\/\d+$/, '') as ValidRouter;
+    validRouter = validRouter.replace(/\/\d+$/, '') as TValidRouter;
 
     switch (validRouter) {
         case '/libro/crear':

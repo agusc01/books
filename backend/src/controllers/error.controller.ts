@@ -1,7 +1,7 @@
 import { envConfig } from '../config/env.config';
 import { Env } from '../models/enums/env.enum';
 import { IHandlerResponse } from '../models/interfaces/handler-response.interface';
-import { ValidRouter } from '../models/types/valid-router.type';
+import { TValidRouter } from '../models/types/valid-router.type';
 import { router } from '../utils/router.util';
 
 require('dotenv').config();
@@ -18,7 +18,7 @@ export const errorAPI: IHandlerResponse = async (req, res) => {
     const host = envConfig(Env.APP_HOST);
     const port = envConfig(Env.APP_PORT);
     const url = `${protocol}://${host}:${port}/api`;
-    const path: ValidRouter = 'libro/listar';
+    const path: TValidRouter = 'libro/listar';
 
     return res.status(500).send({
         msg: 'Libros | Página no encontrada',

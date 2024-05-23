@@ -1,3 +1,3 @@
-import { ValidRouter } from "../models/types/valid-router.type";
+import { TValidRouter } from "../models/types/valid-router.type";
 
-export const router = (router: ValidRouter) => router;
+export const router = (router: TValidRouter) => router;

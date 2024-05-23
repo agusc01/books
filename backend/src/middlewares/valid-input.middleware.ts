@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { IToast } from "../models/interfaces/toast.interface";
-import { ValidRouter } from "../models/types/valid-router.type";
+import { TValidRouter } from "../models/types/valid-router.type";
 import { renderTo } from "../utils/renderTo.util";
 import { setToasts } from '../utils/scripts.util';
 
@@ -18,7 +18,7 @@ export const validInputMiddleware = (req: Request, res: Response, next: any): vo
             return mensaje;
         });
         setToasts(res, mensajes);
-        return renderTo(req, res, req.originalUrl as ValidRouter);
+        return renderTo(req, res, req.originalUrl as TValidRouter);
     }
 
     next();
