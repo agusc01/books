@@ -31,7 +31,7 @@ export const loginPOST: IHandlerResponse = async (req, res) => {
 
     if (resp.isError) {
         setToasts(res, [{ type: 'error', text: resp.data as string }]);
-        return registerGET(req, res);
+        return loginGET(req, res);
     }
 
     const user = resp.data as IUser;
@@ -56,6 +56,7 @@ export const loginPOST: IHandlerResponse = async (req, res) => {
         type: 'error',
     }]);
 
+    return loginGET(req, res);
 };
 
 export const logoutGET: IHandlerResponse = async (req, res) => {
