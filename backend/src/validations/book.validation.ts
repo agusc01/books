@@ -27,7 +27,7 @@ const yearValidation = body('year')
             throw new Error(`El año debe ser igual o mayor que ${year.min}`);
         }
         if (parseInt(value) > year.max) {
-            throw new Error(`El año debe ser igual o menor que ${year.min}`);
+            throw new Error(`El año debe ser igual o menor que ${year.max}`);
         }
         return true;
     });
@@ -40,7 +40,7 @@ const priceValidatio = body('price')
             throw new Error(`El precio debe ser igual o mayor que ${price.min}`);
         }
         if (parseInt(value) > price.max) {
-            throw new Error(`El precio debe ser igual o menor que ${price.min}`);
+            throw new Error(`El precio debe ser igual o menor que ${price.max}`);
         }
         return true;
     });
