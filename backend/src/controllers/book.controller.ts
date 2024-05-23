@@ -18,7 +18,8 @@ export const listBooksGET: IHandlerResponse = async (req, res) => {
     const resp = await getAllBooks();
 
     if (resp.isError) {
-        return res.status(500).send({ error: dbError });
+        setToasts(res, [{ text: `${dbError}. ${resp.data}`, type: 'error' }]);
+        return renderTo(req, res, '/404');
     }
 
     return res.render(router('libro/listar'), {
@@ -29,12 +30,11 @@ export const listBooksGET: IHandlerResponse = async (req, res) => {
 
 export const createBookGET: IHandlerResponse = async (req, res) => {
 
-    const path: TValidRouter = '/libro/crear';
     return res.render(router('libro/crear'), {
         view: { title: "Libros | Crear", },
         book: {},
         typeOfAction: 'Agregar',
-        action: path
+        action: '/libro/crear' as TValidRouter
     });
 };
 
@@ -63,12 +63,11 @@ export const updateBookGET: IHandlerResponse = async (req, res) => {
         return renderTo(req, res, '/libro/listar');
     }
 
-    const path = ('/libro/modificar' as TValidRouter) + '/' + id + '?_method=PUT';
     return res.render(router('libro/crear'), {
         view: { title: "Libros | Modifcar", },
         typeOfAction: 'Modificar',
         book: resp.data as IBook,
-        action: path,
+        action: `${('/libro/modificar' as TValidRouter)}/${id}?_method=PUT`,
     });
 };
 
@@ -98,13 +97,11 @@ export const deleteBookConfirmationDELETE: IHandlerResponse = async (req, res) =
         return renderTo(req, res, '/libro/listar');
     }
 
-    const deleteBookPath: TValidRouter = '/libro/eliminar';
-
     setConfirm(res, [{
         type: 'question',
         text: `Título del libro: ${(resp.data as IBook).title}`,
         title: '¿Realmente quiere eliminar el libro?',
-        newHref: deleteBookPath + '/' + (resp.data as IBook).id + '?_method=DELETE',
+        newHref: `${'/libro/eliminar'}/${(resp.data as IBook).id}?_method=DELETE`,
         oldHref: '/libro/listar'
     }]);
 

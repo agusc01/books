@@ -2,13 +2,16 @@
 
 <main class="main">
     <div class="container">
-        <h1 class="text-info">Lista de Libros</h1>
+        <% if(books?.length){ %>
+            <h1 class="text-info">Lista de Libros</h1>
             <div class="row">
                 <% books.forEach( (book,index) => { %>
                     <%- include('./../components/card-book', { book: book }) %>
                 <% }); %>
-            </div>
-        </div>
+            </div>                
+        <%} else{ %>
+            <h1 class="text-warning text-center">No hay libros disponibles.</h1>
+        <% } %>
     </div>
 </main>
 
