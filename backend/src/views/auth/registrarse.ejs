@@ -27,14 +27,24 @@
             >
             <label for="password">Clave</label>
         </div>
-        <div class="clearfix mb-4">
-            <button type="submit" class="button-86 me-2 float-end">Ingresar</button>
+        <div class="form-floating mb-3">
+            <input 
+                type="password" 
+                class="form-control" 
+                id="passwordAgain" 
+                name="passwordAgain"
+                placeholder="Password"
+            >
+            <label for="passwordAgain">Repite clave</label>
         </div>
-        <hr>
+        <div class="clearfix mb-4">
+            <button type="submit" class="button-86 me-2 float-end">Registrarse</button>
+        </div>
         <div class="container text-center">
+            <hr>
             <p>
-                ¿ No está registrado ?
-                <a href="/auth/registrarse" class="text-info">Registrarse</a>
+                ¿ Ya está registrado ?
+                <a href="/auth/iniciar-sesion" class="text-info">Ingresar</a>
             </p>
         </div>
     </form>

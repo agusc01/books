@@ -10,8 +10,17 @@ const passValidation = body('password')
     .isAlphanumeric()
     .withMessage('La contraseña debe contener letras y/o números.');
 
+const passAgainValidation = body('passwordAgain')
+    .custom((value, { req }) => value === req.body.password)
+    .withMessage('Las contraseñas deben coincidir.');
+
 
 export const loginValidation = [
     mailValidation,
     passValidation
+];
+
+export const registerValidation = [
+    passAgainValidation,
+    ...loginValidation
 ];

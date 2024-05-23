@@ -1,7 +1,7 @@
 import { envConfig } from '../config/env.config';
 import { Env } from '../models/enums/env.enum';
 import { IHandlerResponse } from '../models/interfaces/handler-response.interface';
-import { deleteOneBook, getAllBooks, getOneBook, saveOnebook, updateOneBook } from '../services/book.service';
+import { deleteOneBook, getAllBooks, getOneBook, saveOneBook, updateOneBook } from '../services/book.service';
 
 
 require('dotenv').config();
@@ -37,7 +37,7 @@ export const apiOneBookGET: IHandlerResponse = async (req, res) => {
 export const apiCreateBooksPOST: IHandlerResponse = async (req, res) => {
 
     if (!req.body.img) { req.body.img = 'fake-url'; }
-    const resp = await saveOnebook(req.body);
+    const resp = await saveOneBook(req.body);
 
     if (resp.isError) {
         const error = dbError + (resp.data as string);

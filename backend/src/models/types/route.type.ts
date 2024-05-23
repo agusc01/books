@@ -5,6 +5,9 @@ export type Route =
     | '/libro'
     | '/auth'
 
+    | 'auth/registrarse'
+    | '/auth/registrarse'
+
     | 'auth/iniciar-sesion'
     | '/auth/iniciar-sesion'
 

@@ -2,7 +2,7 @@ import { envConfig } from '../config/env.config';
 import { Env } from '../models/enums/env.enum';
 import { IHandlerResponse } from '../models/interfaces/handler-response.interface';
 import { ValidRouter } from '../models/types/valid-router.type';
-import { deleteOneBook, getAllBooks, getOneBook, saveOnebook, updateOneBook } from '../services/book.service';
+import { deleteOneBook, getAllBooks, getOneBook, saveOneBook, updateOneBook } from '../services/book.service';
 import { renderTo } from '../utils/renderTo.util';
 import { router } from '../utils/router.util';
 import { setConfirm, setToasts } from '../utils/scripts.util';
@@ -42,7 +42,7 @@ export const createBookPOST: IHandlerResponse = async (req, res) => {
 
     const { price, title, year } = req.body;
     const book: IBook = { price, title, year, img: 'fake-url' };
-    const resp = await saveOnebook(book);
+    const resp = await saveOneBook(book);
 
     if (resp.isError) {
         setToasts(res, [{ type: 'error', text: resp.data as string }]);
