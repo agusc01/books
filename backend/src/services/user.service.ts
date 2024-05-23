@@ -22,17 +22,17 @@ const msg_error_create = envConfig(Env.DB_MSG_ERROR_CREATE);
 //     } finally { }
 // };
 
-export const getOneUser = async (id: string): Promise<IResponseDb<IUser | string>> => {
-    try {
-        const user = await User.findByPk(id);
-        if (!user) {
-            throw new Error(`El usuario con el id ${id} no existe`);
-        }
-        return { isError: false, data: user };
-    } catch (e: any) {
-        return { isError: true, data: `${msg_error_read} ${takeMsgError(e)}.` };
-    } finally { }
-};
+// export const getOneUser = async (id: string): Promise<IResponseDb<IUser | string>> => {
+//     try {
+//         const user = await User.findByPk(id);
+//         if (!user) {
+//             throw new Error(`El usuario con el id ${id} no existe`);
+//         }
+//         return { isError: false, data: user };
+//     } catch (e: any) {
+//         return { isError: true, data: `${msg_error_read} ${takeMsgError(e)}.` };
+//     } finally { }
+// };
 
 export const getOneUserByEmail = async (email: string): Promise<IResponseDb<IUser | string>> => {
     try {
