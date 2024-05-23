@@ -3,10 +3,10 @@ import express from 'express';
 import path from 'path';
 import { testDataBaseWithSequelice } from './config/db.config';
 import { checkEnvironments, envConfig } from './config/env.config';
+import { errorGet } from './controllers/error.controller';
 import { Env } from './models/enums/env.enum';
 import { apiRouter } from './router/api.router';
 import { bookRouter } from './router/book.router';
-import { errorRouter } from './router/error.router';
 import { router } from './utils/router.util';
 
 const methodOverride = require('method-override');
@@ -49,7 +49,7 @@ app.use(router('/api'), async (req: express.Request, res: express.Response) => {
     return res.status(500).send({ msg: 'Libros | Página no encontrada' });
 });
 
-app.use(errorRouter);
+app.use(errorGet);
 
 app.listen(port, () => {
     console.log('-----------------------------------------------------');

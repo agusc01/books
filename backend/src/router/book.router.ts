@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createBookGET, createBookPOST, deleteBookDELETE, listBooksGET, updateBookGET, updateBookPUT } from "../controllers/book.controller";
+import { createBookGET, createBookPOST, deleteBookConfirmationDELETE, deleteBookDELETE, listBooksGET, updateBookGET, updateBookPUT } from "../controllers/book.controller";
 import { validInputMiddleware } from "../middlewares/valid-input.middleware";
 import { router } from "../utils/router.util";
 import { createBookValidation, updateBookvalidation } from "../validations/book.validation";
@@ -11,5 +11,6 @@ bookRouter.get(router('/crear'), createBookGET);
 bookRouter.post(router('/crear'), createBookValidation, validInputMiddleware, createBookPOST);
 bookRouter.get(router('/modificar/:id'), updateBookGET);
 bookRouter.put(router('/modificar/:id'), updateBookvalidation, validInputMiddleware, updateBookPUT);
+bookRouter.delete(router('/eliminar-confirmacion/:id'), deleteBookConfirmationDELETE);
 bookRouter.delete(router('/eliminar/:id'), deleteBookDELETE);
 

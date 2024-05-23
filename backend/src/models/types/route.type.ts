@@ -21,4 +21,10 @@ export type Route =
     | '/libro/eliminar/:id'
     | '/libro/eliminar'
 
+    | 'libro/eliminar-confirmacion'
+    | 'libro/eliminar-confirmacion/:id'
+    | '/libro/eliminar-confirmacion/:id'
+    | '/libro/eliminar-confirmacion'
+
+
 

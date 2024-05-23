@@ -1,12 +1,12 @@
 import { envConfig } from '../config/env.config';
 import { Env } from '../models/enums/env.enum';
-import { IBook } from '../models/interfaces/book.interface';
 import { IHandlerResponse } from '../models/interfaces/handler-response.interface';
 import { ValidRouter } from '../models/types/valid-router.type';
 import { deleteOneBook, getAllBooks, getOneBook, saveOnebook, updateOneBook } from '../services/book.service';
 import { renderTo } from '../utils/renderTo.util';
 import { router } from '../utils/router.util';
-import { setToasts } from '../utils/scripts.util';
+import { setConfirm, setToasts } from '../utils/scripts.util';
+import { IBook } from './../models/interfaces/book.interface';
 
 
 require('dotenv').config();
@@ -89,6 +89,29 @@ export const updateBookPUT: IHandlerResponse = async (req, res) => {
     return updateBookGET(req, res);
 };
 
+export const deleteBookConfirmationDELETE: IHandlerResponse = async (req, res) => {
+
+    const id = req.params.id;
+    const resp = await getOneBook(id);
+    if (resp.isError) {
+        setToasts(res, [{ type: 'error', text: resp.data as string }]);
+        return renderTo(req, res, '/libro/listar');
+    }
+
+    const deleteBookPath: ValidRouter = '/libro/eliminar';
+
+    setConfirm(res, [{
+        type: 'question',
+        text: `Título del libro: ${(resp.data as IBook).title}`,
+        title: '¿Realmente quiere eliminar el libro?',
+        newHref: deleteBookPath + '/' + (resp.data as IBook).id + '?_method=DELETE',
+        oldHref: '/libro/listar'
+    }]);
+
+    return listBooksGET(req, res);
+};
+
+
 export const deleteBookDELETE: IHandlerResponse = async (req, res) => {
 
     const id = req.params.id;
@@ -100,5 +123,5 @@ export const deleteBookDELETE: IHandlerResponse = async (req, res) => {
         setToasts(res, [{ type: 'success', text: 'Se eliminó el libro' }]);
     }
 
-    return listBooksGET(req, res);
+    return renderTo(req, res, '/libro/listar');
 };

@@ -1,0 +1,13 @@
+<script>
+    (()=>{
+        let confirms = '<%- JSON.stringify(locals.confirms)%>';
+        if(!confirms){ return; }
+        confirms = JSON.parse(confirms);
+        if (confirms && confirms?.length > 0) {
+            for (let i = 0; i < confirms.length; i++) {
+                confirmSweet(confirms[i]);
+            }
+        }
+        '<%- locals.confirms = null %>'
+    })();
+</script>

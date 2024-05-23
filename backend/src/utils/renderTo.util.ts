@@ -10,6 +10,7 @@ export const renderTo = (req: Request, res: Response, validRouter: ValidRouter):
             setNewHref(res, validRouter);
             return createBookGET(req, res);
         case '/libro/listar':
+            console.log({ validRouter });
             setNewHref(res, validRouter);
             return listBooksGET(req, res);
         default:

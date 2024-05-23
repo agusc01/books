@@ -1,5 +1,6 @@
 import { Response } from "express";
 import { IAlert } from '../models/interfaces/alert.interface';
+import { IConfirmSweet } from "../models/interfaces/confirm-sweet.interface";
 import { IToast } from '../models/interfaces/toast.interface';
 import { ValidRouter } from "../models/types/valid-router.type";
 
@@ -20,6 +21,13 @@ export const setAlerts = (res: Response, alerts: IAlert[]): void => {
     res.locals.alerts = alerts;
 };
 
+export const setConfirm = (res: Response, confirms: IConfirmSweet[]): void => {
+    // TODO: put spanish title
+    confirms.forEach(confirm => {
+        confirm.title = confirm.title ? confirm.title : confirm.type;
+    });
+    res.locals.confirms = confirms;
+};
 
 export const setNewHref = (res: Response, newHref: ValidRouter): void => {
     res.locals.newHref = newHref;
