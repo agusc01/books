@@ -3,6 +3,13 @@ export type Route =
     | '/404'
     | '/api'
     | '/libro'
+    | '/auth'
+
+    | 'auth/iniciar-sesion'
+    | '/auth/iniciar-sesion'
+
+    | 'auth/cerrar-sesion'
+    | '/auth/cerrar-sesion'
 
     | 'libro/listar'
     | '/libro/listar'

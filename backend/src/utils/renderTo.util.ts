@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { loginGET } from "../controllers/auth.controller";
 import { createBookGET, listBooksGET, updateBookGET } from "../controllers/book.controller";
 import { errorGet } from "../controllers/error.controller";
 import { ValidRouter } from "../models/types/valid-router.type";
@@ -29,7 +30,11 @@ export const renderTo = (req: Request, res: Response, validRouter: ValidRouter):
         case '/libro/listar':
             setNewHref(res, validRouter);
             return listBooksGET(req, res);
+        case '/auth/iniciar-sesion':
+            setNewHref(res, validRouter);
+            return loginGET(req, res);
         default:
+            setNewHref(res, '/404');
             return errorGet(req, res);
     }
 };

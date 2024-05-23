@@ -1,0 +1,38 @@
+<%- include('../partials/header') %>
+
+<main class="main">
+    <form 
+        class="container login bounce-in-top" 
+        action=""
+        method="POST"
+        enctype="application/x-www-form-urlencoded"
+    >
+        <div class="form-floating mb-3">
+            <input 
+                type="email" 
+                class="form-control" 
+                id="email" 
+                name="email"
+                placeholder="ejemplo@ejemplo.com"
+                value="test@test.com"
+            >
+            <label for="email">Correo electrónico</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input 
+                type="password" 
+                class="form-control" 
+                id="password" 
+                name="password"
+                placeholder="Password"
+                value="123123"
+            >
+            <label for="password">Clave</label>
+        </div>
+        <div class="clearfix mb-4">
+            <button type="submit" class="button-86 me-2 float-end">Ingresar</button>
+        </div>
+    </form>
+</main>
+
+<%- include('../partials/footer') %>

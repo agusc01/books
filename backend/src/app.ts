@@ -4,9 +4,12 @@ import path from 'path';
 import { testDataBaseWithSequelice } from './config/db.config';
 import { checkEnvironments, envConfig } from './config/env.config';
 import { errorGet } from './controllers/error.controller';
+import { isLoggedGuard } from './guards/is-logged.guard';
 import { Env } from './models/enums/env.enum';
 import { apiRouter } from './router/api.router';
+import { authRouter } from './router/auth.router';
 import { bookRouter } from './router/book.router';
+import { initSession, localsSetLogged, sessionGetLogged } from './services/session.service';
 import { router } from './utils/router.util';
 
 const methodOverride = require('method-override');
@@ -39,12 +42,19 @@ app.use(express.static(path.resolve(__dirname, './../public')));
 app.set('view engine', 'ejs');
 app.set('views', path.resolve(__dirname, "./views"));
 
+// * SESSION
+app.use(initSession());
+app.use((req, res, next) => {
+    localsSetLogged(res, sessionGetLogged(req));
+    next();
+});
 
 app.use(router('/api'), apiRouter);
-app.use(router('/libro'), bookRouter);
+app.use(router('/libro'), isLoggedGuard, bookRouter);
+app.use(router('/auth'), authRouter);
 
 
-// * Tiene que ser el último ruteo
+// * ULTIMO RUTEO
 app.use(router('/api'), async (req: express.Request, res: express.Response) => {
     return res.status(500).send({ msg: 'Libros | Página no encontrada' });
 });
