@@ -1,6 +1,7 @@
 export enum Env {
     APP_PORT = 'APP_PORT',
     APP_HOST = 'APP_HOST',
+    APP_PROTOCOL = 'APP_PROTOCOL',
     DB_PORT = 'DB_PORT',
     DB_HOST = 'DB_HOST',
     DB_USER = 'DB_USER',
