@@ -18,7 +18,8 @@ export const validInputMiddleware = (req: Request, res: Response, next: any): vo
             return mensaje;
         });
         setToasts(res, mensajes);
-        return renderTo(req, res, req.originalUrl as TValidRouter);
+        const url = req.originalUrl as TValidRouter;
+        return renderTo(req, res, url);
     }
 
     next();

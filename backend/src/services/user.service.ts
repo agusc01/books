@@ -14,7 +14,6 @@ const msgErrorRead = envConfig(Env.DB_MSG_ERROR_READ);
 export const getOneUserByEmail = async (email: string): Promise<IResponseDb<IUser | string>> => {
     try {
         const user = await User.findOne({ 'email': { $eq: email } });
-        console.log({ user });
         if (!user) { throw new Error(`${msgErrorLoginUser}`); }
         return { isError: false, data: user };
     } catch (e: any) {

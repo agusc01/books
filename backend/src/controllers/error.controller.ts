@@ -3,10 +3,12 @@ import { Env } from '../models/enums/env.enum';
 import { IHandlerResponse } from '../models/interfaces/handler-response.interface';
 import { TValidRouter } from '../models/types/valid-router.type';
 import { router } from '../utils/router.util';
+import { setNewHref } from '../utils/scripts.util';
 
 require('dotenv').config();
 
 export const errorGet: IHandlerResponse = async (req, res) => {
+    setNewHref(res, '/404');
     return res.render(router('404'), {
         view: { title: 'Libros | Página no encontrada' }
     });
