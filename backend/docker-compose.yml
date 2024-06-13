@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+    db:
+        image: mongo:5
+        restart: always
+        ports:
+            # puerto de mi computador : puerto de docker
+            - 27017:27017
+        environment:
+            MONGODB_DATABASE: programacion_avanzada_2
+        volumes:
+            # carpeta física en está compu : carpeta que está en docker
+            - ./mongo:/data/db

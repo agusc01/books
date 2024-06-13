@@ -13,7 +13,8 @@ const msgErrorRead = envConfig(Env.DB_MSG_ERROR_READ);
 
 export const getOneUserByEmail = async (email: string): Promise<IResponseDb<IUser | string>> => {
     try {
-        const user = await User.findOne({ where: { email } });
+        const user = await User.findOne({ 'email': { $eq: email } });
+        console.log({ user });
         if (!user) { throw new Error(`${msgErrorLoginUser}`); }
         return { isError: false, data: user };
     } catch (e: any) {
@@ -21,9 +22,9 @@ export const getOneUserByEmail = async (email: string): Promise<IResponseDb<IUse
     } finally { }
 };
 
-export const getOneUserByUUID = async (uuid: string): Promise<IResponseDb<IUser | string>> => {
+export const getOneUserById = async (id: string): Promise<IResponseDb<IUser | string>> => {
     try {
-        const user = await User.findByPk(uuid);
+        const user = await User.findById(id);
         if (!user) { throw new Error(`${msgErrorLoginUser}`); }
         return { isError: false, data: user };
     } catch (e: any) {
@@ -33,7 +34,8 @@ export const getOneUserByUUID = async (uuid: string): Promise<IResponseDb<IUser 
 
 export const saveOneUser = async (user: IUser): Promise<IResponseDb<IUser | string>> => {
     try {
-        const newUser = await User.create(user);
+        const newUser = new User(user);
+        newUser.save();
         return { isError: false, data: newUser };
     } catch (e: any) {
         return { isError: true, data: `${msgErrorCreate} ${takeMsgError(e)}.` };

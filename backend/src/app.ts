@@ -1,7 +1,7 @@
 
 import express from 'express';
 import path from 'path';
-import { testDataBaseWithSequelice } from './config/db.config';
+import { connectToMongoDB } from './config/db.config';
 import { checkEnvironments, envConfig } from './config/env.config';
 import { errorAPI, errorGet } from './controllers/error.controller';
 import { isLoggedGuard } from './guards/is-logged.guard';
@@ -68,4 +68,4 @@ app.listen(port, () => {
     console.log('-----------------------------------------------------');
 });
 
-testDataBaseWithSequelice();
+connectToMongoDB();

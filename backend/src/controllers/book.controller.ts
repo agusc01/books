@@ -74,9 +74,9 @@ export const updateBookGET: IHandlerResponse = async (req, res) => {
 
 export const updateBookPUT: IHandlerResponse = async (req, res) => {
 
-    const id = req.params.id;
+    const _id = req.params.id;
     const { price, title, year } = req.body;
-    const book: IBook = { price, title, year, img: 'fake-url', id };
+    const book: IBook = { price, title, year, img: 'fake-url', _id };
     const resp = await updateOneBook(book);
 
     if (resp.isError) {
@@ -101,7 +101,7 @@ export const deleteBookConfirmationDELETE: IHandlerResponse = async (req, res) =
         type: 'question',
         text: `Título del libro: ${(resp.data as IBook).title}`,
         title: '¿Realmente quiere eliminar el libro?',
-        newHref: `${'/libro/eliminar'}/${(resp.data as IBook).id}?_method=DELETE`,
+        newHref: `${'/libro/eliminar'}/${(resp.data as IBook)._id}?_method=DELETE`,
         oldHref: '/libro/listar'
     }]);
 

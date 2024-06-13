@@ -11,14 +11,14 @@ const jwtKey = String(envConfig(Env.JWT_PRIVATE_KEY));
 const msgErrorRead = envConfig(Env.DB_MSG_ERROR_READ);
 const msgErrorCreate = envConfig(Env.DB_MSG_ERROR_CREATE);
 
-export const JWTGenerate = async ({ uuid, email }: Partial<IUser>): Promise<IResponseDb<string>> => {
+export const JWTGenerate = async ({ _id, email }: Partial<IUser>): Promise<IResponseDb<string>> => {
 
     try {
 
-        if (!uuid) { throw new Error('No tenemos el uuid del usuario'); }
+        if (!_id) { throw new Error('No tenemos el _id del usuario'); }
         if (!email) { throw new Error('No tenemos el email del usuario'); }
 
-        const jwtConstructor = new SignJWT({ uuid, email });
+        const jwtConstructor = new SignJWT({ _id, email });
         const encoder = new TextEncoder();
         const jwt = await jwtConstructor
             .setProtectedHeader({ alg: "HS256", typ: "JWT" })

@@ -14,7 +14,7 @@ const msgErrorDelete = envConfig(Env.DB_MSG_ERROR_DELETE);
 
 export const getAllBooks = async (): Promise<IResponseDb<IBook[] | string>> => {
     try {
-        const books = await Book.findAll();
+        const books = await Book.find();
         return { isError: false, data: books };
     } catch (e: any) {
         return { isError: true, data: `${msgErrorRead} ${takeMsgError(e)}.` };
@@ -23,7 +23,7 @@ export const getAllBooks = async (): Promise<IResponseDb<IBook[] | string>> => {
 
 export const getOneBook = async (id: string): Promise<IResponseDb<IBook | string>> => {
     try {
-        const book = await Book.findByPk(id);
+        const book = await Book.findById(id);
         if (!book) {
             throw new Error(`El libro con el id ${id} no existe`);
         }
@@ -47,12 +47,12 @@ export const saveOneBook = async (book: IBook): Promise<IResponseDb<IBook | stri
 export const updateOneBook = async (book: IBook): Promise<IResponseDb<IBook | string>> => {
     try {
         console.log({ book });
-        const bookFound = await Book.findByPk(book.id);
+        const bookFound = await Book.findById(book._id);
         if (!bookFound) {
-            throw new Error(`El libro con el id ${book.id} no existe`);
+            throw new Error(`El libro con el id ${book._id} no existe`);
         }
-        await bookFound.update(book);
-        return { isError: false, data: book };
+        await bookFound.updateOne(book);
+        return { isError: false, data: { ...bookFound, ...book } };
     } catch (e: any) {
         return { isError: true, data: `${msgErrorUpdate} ${takeMsgError(e)}.` };
     } finally { }
@@ -61,12 +61,12 @@ export const updateOneBook = async (book: IBook): Promise<IResponseDb<IBook | st
 
 export const deleteOneBook = async (id: string): Promise<IResponseDb<IBook | string>> => {
     try {
-        const book = await Book.findByPk(id);
+        const book = await Book.findById(id);
         if (!book) {
             throw new Error(`El libro con el id ${id} no existe`);
         }
-        const deletedRows = await Book.destroy({ where: { id } });
-        if (deletedRows === 0) {
+        const deletedRows = await book.deleteOne();
+        if (deletedRows.deletedCount === 0) {
             throw new Error(`No se pudo eliminar el libro con el id ${id}`);
         }
         return { isError: false, data: book };

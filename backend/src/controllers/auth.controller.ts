@@ -49,8 +49,8 @@ export const loginPOST: IHandlerResponse = async (req, res) => {
     }
 
 
-    const { uuid } = user;
-    const payload = await JWTGenerate({ email, uuid });
+    const { _id } = user;
+    const payload = await JWTGenerate({ email, _id });
 
     if (payload.isError) {
         setToasts(res, [{

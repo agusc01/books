@@ -1,33 +1,33 @@
-import { Sequelize } from 'sequelize';
+import { Book } from "../models/classes/book.class";
 import { Env } from "../models/enums/env.enum";
 import { envConfig } from "./env.config";
 
 require('dotenv').config();
 
-export const sequelize = new Sequelize({
-    dialect: 'mysql',
-    host: String(envConfig(Env.DB_HOST)),
-    port: Number(envConfig(Env.DB_PORT)),
-    username: String(envConfig(Env.DB_USER)),
-    password: String(envConfig(Env.DB_PASS)),
-    database: String(envConfig(Env.DB_NAME)),
-});
+import mongoose from 'mongoose';
+import { books } from "./insert-book";
 
-export const testDataBaseWithSequelice = async () => {
+export const connectToMongoDB = async () => {
     try {
-        await sequelize.authenticate();
-        console.log('\n-----------------------------------------------------');
-        console.log(`Conexión exitosa a la base de datos. PORT: ${envConfig(Env.DB_PORT)}`);
-        console.log('-----------------------------------------------------\n');
-        await sequelize.sync();
-        console.log('\n-----------------------------------------------------');
-        console.log(`Tablas sincronizadas exitosamente`);
-        console.log('-----------------------------------------------------\n');
+        await mongoose.connect(String(envConfig(Env.MONGO_URI)));
+        console.log('Se conecto MongoDB éxitosamente');
+        await feed();
+    }
+    catch (error: any) {
+        console.error('Error de conexión' + error.message);
+        throw error;
+    }
+};
+
+
+const feed = async (): Promise<void> => {
+    try {
+        const _books = await Book.find();
+        if (_books.length === 0) {
+            await Book.insertMany(books);
+            console.log('Se agregaron los libros');
+        }
     } catch (error) {
-        console.log('\n-----------------------------------------------------');
-        console.error('Error al conectar a la base de datos:', error);
-        console.log('-----------------------------------------------------\n');
-    } finally {
-        // await sequelize.close();
+        console.error(error);
     }
 };

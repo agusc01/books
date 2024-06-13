@@ -20,4 +20,5 @@ export enum Env {
     JWT_TIME = 'JWT_TIME',
     SESSION_NAME = 'SESSION_NAME',
     BCRYPT_SALT = 'BCRYPT_SALT',
+    MONGO_URI = 'MONGO_URI',
 }
