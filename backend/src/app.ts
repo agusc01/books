@@ -5,12 +5,13 @@ import { testDataBaseWithSequelice } from './config/db.config';
 import { checkEnvironments, envConfig } from './config/env.config';
 import { errorAPI, errorGet } from './controllers/error.controller';
 import { isLoggedGuard } from './guards/is-logged.guard';
+import { JWTMiddleware } from './middlewares/jwt.middleware';
 import { Env } from './models/enums/env.enum';
 import { apiRouter } from './router/api.router';
 import { authRouter } from './router/auth.router';
 import { bookRouter } from './router/book.router';
 import { localsSetLogged } from './services/locals.service';
-import { initSession, sessionGetLogged } from './services/session.service';
+import { initSession, sessionGetIsLogged } from './services/session.service';
 import { router } from './utils/router.util';
 
 const methodOverride = require('method-override');
@@ -46,15 +47,15 @@ app.set('views', path.resolve(__dirname, "./views"));
 // * SESSION
 app.use(initSession());
 app.use((req, res, next) => {
-    localsSetLogged(res, sessionGetLogged(req));
+    localsSetLogged(res, sessionGetIsLogged(req));
     next();
 });
 
 app.use(router('/home'), async (req: express.Request, res: express.Response) => {
     return res.render(router('home'), { view: { title: "Libros | Home", }, });
 });
-app.use(router('/api'), apiRouter);
-app.use(router('/libro'), isLoggedGuard, bookRouter);
+app.use(router('/api'), JWTMiddleware, apiRouter);
+app.use(router('/libro'), isLoggedGuard, JWTMiddleware, bookRouter);
 app.use(router('/auth'), authRouter);
 
 // * ERRORS

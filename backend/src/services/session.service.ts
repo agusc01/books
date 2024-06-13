@@ -11,11 +11,11 @@ export const initSession = () => {
     });
 };
 
-export const sessionSetLogged = (req: Request, isLogged: boolean): void => {
+export const sessionSetIsLogged = (req: Request, isLogged: boolean): void => {
     (req as any).session.isLogged = isLogged;
 };
 
-export const sessionGetLogged = (req: Request): boolean => {
+export const sessionGetIsLogged = (req: Request): boolean => {
     return (req as any).session.isLogged;
 };
 

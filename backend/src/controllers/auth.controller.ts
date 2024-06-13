@@ -4,8 +4,9 @@ import { envConfig } from '../config/env.config';
 import { Env } from '../models/enums/env.enum';
 import { IHandlerResponse } from '../models/interfaces/handler-response.interface';
 import { IUser } from '../models/interfaces/user.interface';
+import { JWTGenerate, JWTSetToken } from '../services/jwt.service';
 import { localsSetLogged } from '../services/locals.service';
-import { sessionSetLogged } from '../services/session.service';
+import { sessionSetIsLogged } from '../services/session.service';
 import { getOneUserByEmail, saveOneUser } from '../services/user.service';
 import { renderTo } from '../utils/renderTo.util';
 import { router } from '../utils/router.util';
@@ -26,8 +27,8 @@ export const loginGET: IHandlerResponse = async (req, res) => {
 };
 
 export const loginPOST: IHandlerResponse = async (req, res) => {
-    const { email, password } = req.body;
 
+    const { email, password } = req.body;
     const resp = await getOneUserByEmail(email);
 
     if (resp.isError) {
@@ -36,34 +37,46 @@ export const loginPOST: IHandlerResponse = async (req, res) => {
     }
 
     const user = resp.data as IUser;
-
     const match = await bcrypt.compare(password, user.password);
 
-    if (match) {
+    if (!match) {
         setToasts(res, [{
-            text: 'Ha iniciado sesión',
-            type: 'success',
+            title: 'No ha iniciado sesión',
+            text: String(envConfig(Env.DB_MSG_ERROR_LOGIN_USER)),
+            type: 'error',
         }]);
-
-        localsSetLogged(res, true);
-        sessionSetLogged(req, true);
-
-        return renderTo(req, res, '/libro/listar');
+        return loginGET(req, res);
     }
 
-    setToasts(res, [{
-        title: 'No ha iniciado sesión',
-        text: String(envConfig(Env.DB_MSG_ERROR_LOGIN_USER)),
-        type: 'error',
-    }]);
 
-    return loginGET(req, res);
+    const { uuid } = user;
+    const payload = await JWTGenerate({ email, uuid });
+
+    if (payload.isError) {
+        setToasts(res, [{
+            text: payload.data,
+            type: 'error',
+        }]);
+        return renderTo(req, res, '/auth/iniciar-sesion');
+    }
+
+    const token = payload.data;
+
+    localsSetLogged(res, true);
+    sessionSetIsLogged(req, true);
+    JWTSetToken(res, token);
+
+    setToasts(res, [{
+        text: 'Ha iniciado sesión',
+        type: 'success',
+    }]);
+    return renderTo(req, res, '/libro/listar');
 };
 
 export const logoutGET: IHandlerResponse = async (req, res) => {
 
     localsSetLogged(res, false);
-    sessionSetLogged(req, false);
+    sessionSetIsLogged(req, false);
     setToasts(res, [{
         text: 'Se ha cerradó sessión',
         type: 'success'

@@ -1,12 +1,12 @@
 import { IGuard } from "../models/interfaces/guard.interface";
-import { sessionGetLogged } from "../services/session.service";
+import { sessionGetIsLogged } from "../services/session.service";
 import { renderTo } from "../utils/renderTo.util";
 import { setToasts } from "../utils/scripts.util";
 
 
 export const isLoggedGuard: IGuard = async (req, res, next) => {
 
-    if (sessionGetLogged(req)) {
+    if (sessionGetIsLogged(req)) {
         return next();
     }
 
