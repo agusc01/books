@@ -8,9 +8,8 @@ import { JWTGenerate, JWTSetToken } from '../services/jwt.service';
 import { localsSetLogged } from '../services/locals.service';
 import { sessionSetIsLogged } from '../services/session.service';
 import { getOneUserByEmail, saveOneUser } from '../services/user.service';
-import { renderTo } from '../utils/renderTo.util';
 import { router } from '../utils/router.util';
-import { flashToasts, setToasts } from '../utils/scripts.util';
+import { flashToasts } from '../utils/scripts.util';
 
 
 require('dotenv').config();
@@ -40,7 +39,7 @@ export const loginPOST: IHandlerResponse = async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
-        setToasts(res, [{
+        flashToasts(req, [{
             title: 'No ha iniciado sesión',
             text: String(envConfig(Env.DB_MSG_ERROR_LOGIN_USER)),
             type: 'error',
@@ -53,11 +52,11 @@ export const loginPOST: IHandlerResponse = async (req, res) => {
     const payload = await JWTGenerate({ email, _id });
 
     if (payload.isError) {
-        setToasts(res, [{
+        flashToasts(req, [{
             text: payload.data,
             type: 'error',
         }]);
-        return renderTo(req, res, '/auth/iniciar-sesion');
+        return res.redirect(router('/auth/iniciar-sesion'));
     }
 
     const token = payload.data;
@@ -68,11 +67,11 @@ export const loginPOST: IHandlerResponse = async (req, res) => {
     sessionSetIsLogged(req, true);
     JWTSetToken(res, token);
 
-    setToasts(res, [{
+    flashToasts(req, [{
         text: 'Ha iniciado sesión',
         type: 'success',
     }]);
-    return renderTo(req, res, '/libro/listar');
+    return res.redirect(router('/libro/listar'));
 };
 
 export const logoutGET: IHandlerResponse = async (req, res) => {
@@ -81,12 +80,12 @@ export const logoutGET: IHandlerResponse = async (req, res) => {
     localsSetLogged(res, false);
     sessionSetIsLogged(req, false);
 
-    setToasts(res, [{
+    flashToasts(req, [{
         text: 'Se ha cerradó sessión',
         type: 'success'
     }]);
 
-    return renderTo(req, res, '/auth/iniciar-sesion');
+    return res.redirect(router('/auth/iniciar-sesion'));
 };
 
 
@@ -108,10 +107,10 @@ export const registerPOST: IHandlerResponse = async (req, res) => {
     const resp = await saveOneUser({ email, password: hashedPassword });
 
     if (resp.isError) {
-        setToasts(res, [{ type: 'error', text: resp.data as string }]);
+        flashToasts(req, [{ type: 'error', text: resp.data as string }]);
         return registerGET(req, res);
     }
 
-    setToasts(res, [{ type: 'success', text: 'Se creó el usuario' }]);
-    return renderTo(req, res, '/auth/iniciar-sesion');
+    flashToasts(req, [{ type: 'success', text: 'Se creó el usuario' }]);
+    return res.redirect(router('/auth/iniciar-sesion'));
 };

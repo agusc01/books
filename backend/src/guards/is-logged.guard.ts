@@ -1,7 +1,7 @@
 import { IGuard } from "../models/interfaces/guard.interface";
 import { sessionGetIsLogged } from "../services/session.service";
-import { renderTo } from "../utils/renderTo.util";
-import { setToasts } from "../utils/scripts.util";
+import { router } from "../utils/router.util";
+import { flashToasts } from "../utils/scripts.util";
 
 
 export const isLoggedGuard: IGuard = async (req, res, next) => {
@@ -10,10 +10,10 @@ export const isLoggedGuard: IGuard = async (req, res, next) => {
         return next();
     }
 
-    setToasts(res, [{
+    flashToasts(req, [{
         text: 'Usted necesita iniciar sesión',
         type: 'warning'
     }]);
 
-    return renderTo(req, res, '/auth/iniciar-sesion');
+    return res.redirect(router('/auth/iniciar-sesion'));
 };

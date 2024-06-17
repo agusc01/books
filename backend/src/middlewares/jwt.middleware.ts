@@ -4,8 +4,8 @@ import { JWTGetPayLoad, JWTSetToken } from "../services/jwt.service";
 import { localsSetLogged } from "../services/locals.service";
 import { sessionSetIsLogged } from "../services/session.service";
 import { getOneUserById } from "../services/user.service";
-import { renderTo } from "../utils/renderTo.util";
-import { setToasts } from "../utils/scripts.util";
+import { router } from "../utils/router.util";
+import { flashToasts } from "../utils/scripts.util";
 
 
 export const JWTMiddleware = async (req: Request, res: Response, next: any): Promise<unknown> => {
@@ -18,21 +18,21 @@ export const JWTMiddleware = async (req: Request, res: Response, next: any): Pro
         console.log({ _id });
 
         if (!_id) {
-            setToasts(res, [{
+            flashToasts(req, [{
                 text: 'No tiene token valido',
                 type: 'warning'
             }]);
-            return renderTo(req, res, '/auth/iniciar-sesion');
+            return res.redirect(router('/auth/iniciar-sesion'));
         }
 
         const respUser = await getOneUserById(_id);
 
         if (respUser.isError || !respUser.data) {
-            setToasts(res, [{
+            flashToasts(req, [{
                 text: 'Ya no existe el usuario',
                 type: 'error'
             }]);
-            return renderTo(req, res, '/auth/iniciar-sesion');
+            return res.redirect(router('/auth/iniciar-sesion'));
         }
 
 
@@ -53,8 +53,8 @@ export const JWTMiddleware = async (req: Request, res: Response, next: any): Pro
             };
         }
 
-        setToasts(res, [toast]);
-        return renderTo(req, res, '/auth/iniciar-sesion');
+        flashToasts(req, [toast]);
+        return res.redirect(router('/auth/iniciar-sesion'));
     }
 
     next();

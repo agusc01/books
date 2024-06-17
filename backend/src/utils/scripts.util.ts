@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { IAlert } from '../models/interfaces/alert.interface';
 import { IConfirmSweet } from "../models/interfaces/confirm-sweet.interface";
 import { ISpanishTitles } from "../models/interfaces/spanish-titles.interface";
 import { IToast } from '../models/interfaces/toast.interface';
@@ -19,20 +18,6 @@ export const flashToast = (req: Request, toast: IToast) => {
 
 export const flashToasts = (req: Request, toasts: IToast[]) => {
     toasts.forEach(toast => { flashToast(req, toast); });
-};
-
-export const setToasts = (res: Response, toasts: IToast[]): void => {
-    toasts.forEach(toast => {
-        toast.title = toast.title ? toast.title : spanishTitles[toast.type];
-    });
-    res.locals.toasts = toasts;
-};
-
-export const setAlerts = (res: Response, alerts: IAlert[]): void => {
-    alerts.forEach(alert => {
-        alert.title = alert.title ? alert.title : spanishTitles[alert.type];
-    });
-    res.locals.alerts = alerts;
 };
 
 export const setConfirm = (res: Response, confirms: IConfirmSweet[]): void => {

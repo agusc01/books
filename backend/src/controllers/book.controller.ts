@@ -3,9 +3,8 @@ import { Env } from '../models/enums/env.enum';
 import { IHandlerResponse } from '../models/interfaces/handler-response.interface';
 import { TValidRouter } from '../models/types/valid-router.type';
 import { deleteOneBook, getAllBooks, getOneBook, saveOneBook, updateOneBook } from '../services/book.service';
-import { renderTo } from '../utils/renderTo.util';
 import { router } from '../utils/router.util';
-import { setConfirm, setToasts } from '../utils/scripts.util';
+import { flashToasts, setConfirm } from '../utils/scripts.util';
 import { IBook } from './../models/interfaces/book.interface';
 
 
@@ -18,8 +17,8 @@ export const listBooksGET: IHandlerResponse = async (req, res) => {
     const resp = await getAllBooks();
 
     if (resp.isError) {
-        setToasts(res, [{ text: `${dbError}. ${resp.data}`, type: 'error' }]);
-        return renderTo(req, res, '/404');
+        flashToasts(req, [{ text: `${dbError}. ${resp.data}`, type: 'error' }]);
+        return res.redirect(router('/404'));
     }
 
     return res.render(router('libro/listar'), {
@@ -45,9 +44,9 @@ export const createBookPOST: IHandlerResponse = async (req, res) => {
     const resp = await saveOneBook(book);
 
     if (resp.isError) {
-        setToasts(res, [{ type: 'error', text: resp.data as string }]);
+        flashToasts(req, [{ type: 'error', text: resp.data as string }]);
     } else {
-        setToasts(res, [{ type: 'success', text: 'Se creó el libro' }]);
+        flashToasts(req, [{ type: 'success', text: 'Se creó el libro' }]);
     }
 
     return createBookGET(req, res);
@@ -59,8 +58,8 @@ export const updateBookGET: IHandlerResponse = async (req, res) => {
     const resp = await getOneBook(id);
 
     if (resp.isError) {
-        setToasts(res, [{ type: 'error', text: resp.data as string }]);
-        return renderTo(req, res, '/libro/listar');
+        flashToasts(req, [{ type: 'error', text: resp.data as string }]);
+        return res.redirect(router('/libro/listar'));
     }
 
     return res.render(router('libro/crear'), {
@@ -80,9 +79,9 @@ export const updateBookPUT: IHandlerResponse = async (req, res) => {
     const resp = await updateOneBook(book);
 
     if (resp.isError) {
-        setToasts(res, [{ type: 'error', text: resp.data as string }]);
+        flashToasts(req, [{ type: 'error', text: resp.data as string }]);
     } else {
-        setToasts(res, [{ type: 'success', text: 'Se modificó el libro' }]);
+        flashToasts(req, [{ type: 'success', text: 'Se modificó el libro' }]);
     }
 
     return updateBookGET(req, res);
@@ -93,8 +92,8 @@ export const deleteBookConfirmationDELETE: IHandlerResponse = async (req, res) =
     const id = req.params.id;
     const resp = await getOneBook(id);
     if (resp.isError) {
-        setToasts(res, [{ type: 'error', text: resp.data as string }]);
-        return renderTo(req, res, '/libro/listar');
+        flashToasts(req, [{ type: 'error', text: resp.data as string }]);
+        return res.redirect(router('/libro/listar'));
     }
 
     setConfirm(res, [{
@@ -115,10 +114,10 @@ export const deleteBookDELETE: IHandlerResponse = async (req, res) => {
     const resp = await deleteOneBook(id);
 
     if (resp.isError) {
-        setToasts(res, [{ type: 'error', text: resp.data as string }]);
+        flashToasts(req, [{ type: 'error', text: resp.data as string }]);
     } else {
-        setToasts(res, [{ type: 'success', text: 'Se eliminó el libro' }]);
+        flashToasts(req, [{ type: 'success', text: 'Se eliminó el libro' }]);
     }
 
-    return renderTo(req, res, '/libro/listar');
+    return res.redirect(router('/libro/listar'));
 };
