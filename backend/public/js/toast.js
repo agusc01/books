@@ -1,4 +1,4 @@
-const toast = ({ type, title, text, timer = 7000 }) => {
+const toast = ({ type, title, text }) => {
 	const spanishTitles = {
 		error: 'Error',
 		success: 'Éxito',
