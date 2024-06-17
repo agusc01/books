@@ -1,4 +1,16 @@
 const toast = ({ type, title, text, timer = 7000 }) => {
+	const spanishTitles = {
+		error: 'Error',
+		success: 'Éxito',
+		warning: 'Advertencia',
+		info: 'Información',
+		question: 'Pregunta',
+	};
+
+	if (!title) {
+		title = spanishTitles[type];
+	}
+
 	new Notify({
 		status: type,
 		title,

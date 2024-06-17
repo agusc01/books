@@ -17,6 +17,8 @@ export const renderTo = (req: Request, res: Response, validRouter: TValidRouter)
         goTo = router.join("/") as TValidRouter;
     }
 
+    console.log({ goTo });
+
     switch (goTo) {
         case '/libro/crear':
             setNewHref(res, validRouter);

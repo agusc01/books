@@ -23,7 +23,7 @@ export const JWTGenerate = async ({ _id, email }: Partial<IUser>): Promise<IResp
         const jwt = await jwtConstructor
             .setProtectedHeader({ alg: "HS256", typ: "JWT" })
             .setIssuedAt()
-            .setExpirationTime(envConfig(Env.JWT_TIME))
+            .setExpirationTime(String(envConfig(Env.JWT_TIME)))
             .sign(encoder.encode(jwtKey));
 
         return { data: jwt, isError: false };

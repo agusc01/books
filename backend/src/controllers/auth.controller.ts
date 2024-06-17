@@ -10,7 +10,7 @@ import { sessionSetIsLogged } from '../services/session.service';
 import { getOneUserByEmail, saveOneUser } from '../services/user.service';
 import { renderTo } from '../utils/renderTo.util';
 import { router } from '../utils/router.util';
-import { setToasts } from '../utils/scripts.util';
+import { flashToasts, setToasts } from '../utils/scripts.util';
 
 
 require('dotenv').config();
@@ -32,7 +32,7 @@ export const loginPOST: IHandlerResponse = async (req, res) => {
     const resp = await getOneUserByEmail(email);
 
     if (resp.isError) {
-        setToasts(res, [{ type: 'error', text: resp.data as string }]);
+        flashToasts(req, [{ type: 'error', text: resp.data as string }]);
         return loginGET(req, res);
     }
 
@@ -62,6 +62,8 @@ export const loginPOST: IHandlerResponse = async (req, res) => {
 
     const token = payload.data;
 
+    console.log('lolo');
+
     localsSetLogged(res, true);
     sessionSetIsLogged(req, true);
     JWTSetToken(res, token);
@@ -75,8 +77,10 @@ export const loginPOST: IHandlerResponse = async (req, res) => {
 
 export const logoutGET: IHandlerResponse = async (req, res) => {
 
+    JWTSetToken(res, '');
     localsSetLogged(res, false);
     sessionSetIsLogged(req, false);
+
     setToasts(res, [{
         text: 'Se ha cerradó sessión',
         type: 'success'

@@ -1,13 +1,11 @@
-<script>
-    (()=>{
-        let toasts = '<%- JSON.stringify(locals.toasts)%>';
-        if(!toasts){ return; }
-        toasts = JSON.parse(toasts);
-        if (toasts && toasts?.length > 0) {
-            for (let i = 0; i < toasts.length; i++) {
-                toast(toasts[i]);
-            }
-        }
-        '<%- locals.toasts = null %>'
-    })();
-</script>
+<% if (typeof messages !=='undefined') { %>
+    <% if (messages?.error) { %>
+        <script>toast({type:'error', text: '<%= messages.error %>'})</script>
+    <% } else if (messages?.success) { %>
+        <script>toast({type:'success', text: '<%= messages.success %>'})</script>
+    <% } else if (messages?.info) { %>
+        <script>toast({type:'info', text: '<%= messages.info %>'})</script>
+    <% } else if (messages?.warning) { %>
+        <script>toast({type:'warning', text: '<%= messages.warning %>'})</script>
+    <% } %>
+<% } %>

@@ -13,6 +13,7 @@ import { bookRouter } from './router/book.router';
 import { localsSetLogged } from './services/locals.service';
 import { initSession, sessionGetIsLogged } from './services/session.service';
 import { router } from './utils/router.util';
+const flash = require('express-flash');
 
 const methodOverride = require('method-override');
 
@@ -22,6 +23,8 @@ checkEnvironments('key value');
 const app = express();
 const port = envConfig(Env.APP_PORT);
 const host = `${envConfig(Env.APP_HOST)}:${port}`;
+
+app.use(flash());
 
 app.use(express.json());
 app.use(express.urlencoded());

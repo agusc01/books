@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { IAlert } from '../models/interfaces/alert.interface';
 import { IConfirmSweet } from "../models/interfaces/confirm-sweet.interface";
 import { ISpanishTitles } from "../models/interfaces/spanish-titles.interface";
@@ -11,6 +11,14 @@ const spanishTitles: ISpanishTitles = {
     'warning': 'Advertencia',
     'info': 'Información',
     'question': 'Pregunta',
+};
+
+export const flashToast = (req: Request, toast: IToast) => {
+    (req as any).flash(toast.type, toast.text);
+};
+
+export const flashToasts = (req: Request, toasts: IToast[]) => {
+    toasts.forEach(toast => { flashToast(req, toast); });
 };
 
 export const setToasts = (res: Response, toasts: IToast[]): void => {
