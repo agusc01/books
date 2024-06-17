@@ -55,6 +55,7 @@ export const createBookPOST: IHandlerResponse = async (req, res) => {
 export const updateBookGET: IHandlerResponse = async (req, res) => {
 
     const id = req.params.id;
+    if (id.includes('js.map')) { return; }
     const resp = await getOneBook(id);
 
     if (resp.isError) {
@@ -74,11 +75,13 @@ export const updateBookGET: IHandlerResponse = async (req, res) => {
 export const updateBookPUT: IHandlerResponse = async (req, res) => {
 
     const _id = req.params.id;
+    if (_id.includes('js.map')) { return; }
     const { price, title, year } = req.body;
     const book: IBook = { price, title, year, img: 'fake-url', _id };
     const resp = await updateOneBook(book);
 
     if (resp.isError) {
+        console.log('eroroosodfosd');
         flashToasts(req, [{ type: 'error', text: resp.data as string }]);
     } else {
         flashToasts(req, [{ type: 'success', text: 'Se modificó el libro' }]);
@@ -90,6 +93,7 @@ export const updateBookPUT: IHandlerResponse = async (req, res) => {
 export const deleteBookConfirmationDELETE: IHandlerResponse = async (req, res) => {
 
     const id = req.params.id;
+    if (id.includes('js.map')) { return; }
     const resp = await getOneBook(id);
     if (resp.isError) {
         flashToasts(req, [{ type: 'error', text: resp.data as string }]);

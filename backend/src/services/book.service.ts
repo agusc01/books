@@ -46,7 +46,6 @@ export const saveOneBook = async (book: IBook): Promise<IResponseDb<IBook | stri
 
 export const updateOneBook = async (book: IBook): Promise<IResponseDb<IBook | string>> => {
     try {
-        console.log({ book });
         const bookFound = await Book.findById(book._id);
         if (!bookFound) {
             throw new Error(`El libro con el id ${book._id} no existe`);

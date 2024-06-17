@@ -28,7 +28,7 @@ const confirmSweet = async ({ type, title, text, newHref, oldHref }) => {
 	}
 
 	if (result.isDenied) {
-		Swal.fire({
+		await Swal.fire({
 			title: 'Información',
 			text: 'No se aceptaron los cambios',
 			type: 'info',

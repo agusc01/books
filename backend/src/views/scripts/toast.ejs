@@ -1,11 +1,11 @@
 <% if (typeof messages !=='undefined') { %>
     <% if (messages?.error) { %>
         <script>toast({type:'error', text: '<%= messages.error %>'})</script>
-    <% } else if (messages?.success) { %>
+    <% } if (messages?.success) { %>
         <script>toast({type:'success', text: '<%= messages.success %>'})</script>
-    <% } else if (messages?.info) { %>
+    <% } if (messages?.info) { %>
         <script>toast({type:'info', text: '<%= messages.info %>'})</script>
-    <% } else if (messages?.warning) { %>
+    <% } if (messages?.warning) { %>
         <script>toast({type:'warning', text: '<%= messages.warning %>'})</script>
     <% } %>
 <% } %>

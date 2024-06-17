@@ -8,9 +8,6 @@ import { takeMsgError } from "../utils/takeMsgError.util";
 
 const jwtKey = String(envConfig(Env.JWT_PRIVATE_KEY));
 
-const msgErrorRead = envConfig(Env.DB_MSG_ERROR_READ);
-const msgErrorCreate = envConfig(Env.DB_MSG_ERROR_CREATE);
-
 export const JWTGenerate = async ({ _id, email }: Partial<IUser>): Promise<IResponseDb<string>> => {
 
     try {

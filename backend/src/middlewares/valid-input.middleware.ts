@@ -11,8 +11,8 @@ export const validInputMiddleware = (req: Request, res: Response, next: any): vo
         errorsArray.forEach(error => {
             const mensaje: IToast = { text: error?.msg, type: 'error' };
             flashToast(req, mensaje);
+            console.log({ mensaje });
         });
-
         const url = req.originalUrl;
         return res.redirect(url);
     }

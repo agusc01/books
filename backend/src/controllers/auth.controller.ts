@@ -61,8 +61,6 @@ export const loginPOST: IHandlerResponse = async (req, res) => {
 
     const token = payload.data;
 
-    console.log('lolo');
-
     localsSetIsLogged(res, true);
     sessionSetIsLogged(req, true);
     JWTSetToken(res, token);
