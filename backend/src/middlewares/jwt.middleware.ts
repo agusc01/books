@@ -1,27 +1,32 @@
 import { Request, Response } from "express";
 import { IToast } from "../models/interfaces/toast.interface";
 import { JWTGetPayLoad, JWTSetToken } from "../services/jwt.service";
-import { localsSetLogged } from "../services/locals.service";
+import { localsSetIsLogged } from "../services/locals.service";
 import { sessionSetIsLogged } from "../services/session.service";
 import { getOneUserById } from "../services/user.service";
 import { router } from "../utils/router.util";
 import { flashToasts } from "../utils/scripts.util";
 
+const cleanAllCookies = (req: Request, res: Response): void => {
+    JWTSetToken(res, '');
+    localsSetIsLogged(res, false);
+    sessionSetIsLogged(req, false);
+};
 
 export const JWTMiddleware = async (req: Request, res: Response, next: any): Promise<unknown> => {
 
     const resp = await JWTGetPayLoad(req);
-    console.log({ resp });
 
     if (resp.isError) {
         const { _id } = resp.data as any;
-        console.log({ _id });
 
         if (!_id) {
             flashToasts(req, [{
                 text: 'No tiene token valido',
                 type: 'warning'
             }]);
+
+            cleanAllCookies(req, res);
             return res.redirect(router('/auth/iniciar-sesion'));
         }
 
@@ -32,14 +37,10 @@ export const JWTMiddleware = async (req: Request, res: Response, next: any): Pro
                 text: 'Ya no existe el usuario',
                 type: 'error'
             }]);
+
+            cleanAllCookies(req, res);
             return res.redirect(router('/auth/iniciar-sesion'));
         }
-
-
-
-        JWTSetToken(res, '');
-        localsSetLogged(res, false);
-        sessionSetIsLogged(req, false);
 
         let toast: IToast = {
             text: resp.data as string,
@@ -54,6 +55,7 @@ export const JWTMiddleware = async (req: Request, res: Response, next: any): Pro
         }
 
         flashToasts(req, [toast]);
+        cleanAllCookies(req, res);
         return res.redirect(router('/auth/iniciar-sesion'));
     }
 

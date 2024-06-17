@@ -1,18 +1,18 @@
 import { IGuard } from "../models/interfaces/guard.interface";
-import { sessionGetIsLogged } from "../services/session.service";
-import { router } from "../utils/router.util";
-import { flashToasts } from "../utils/scripts.util";
 
 export const isNotLoggedGuard: IGuard = async (req, res, next) => {
 
-    if (sessionGetIsLogged(req)) {
-        flashToasts(req, [{
-            text: 'Usted ya ha iniciado sesión',
-            type: 'warning'
-        }]);
+    // if (sessionGetIsLogged(req)) {
+    //     flashToasts(req, [{
+    //         text: 'Usted ya ha iniciado sesión',
+    //         type: 'warning'
+    //     }]);
+    //     console.log('lulu');
 
-        return res.redirect(router('/libro/listar'));
-    }
+    //     return res.redirect(router('/libro/listar'));
+    // }
+
+
 
     return next();
 };

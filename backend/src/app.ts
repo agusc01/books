@@ -10,7 +10,7 @@ import { Env } from './models/enums/env.enum';
 import { apiRouter } from './router/api.router';
 import { authRouter } from './router/auth.router';
 import { bookRouter } from './router/book.router';
-import { localsSetLogged } from './services/locals.service';
+import { localsSetIsLogged } from './services/locals.service';
 import { initSession, sessionGetIsLogged } from './services/session.service';
 import { router } from './utils/router.util';
 const flash = require('express-flash');
@@ -50,7 +50,7 @@ app.set('views', path.resolve(__dirname, "./views"));
 // * SESSION
 app.use(initSession());
 app.use((req, res, next) => {
-    localsSetLogged(res, sessionGetIsLogged(req));
+    localsSetIsLogged(res, sessionGetIsLogged(req));
     next();
 });
 

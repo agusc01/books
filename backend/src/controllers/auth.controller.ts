@@ -5,7 +5,7 @@ import { Env } from '../models/enums/env.enum';
 import { IHandlerResponse } from '../models/interfaces/handler-response.interface';
 import { IUser } from '../models/interfaces/user.interface';
 import { JWTGenerate, JWTSetToken } from '../services/jwt.service';
-import { localsSetLogged } from '../services/locals.service';
+import { localsSetIsLogged } from '../services/locals.service';
 import { sessionSetIsLogged } from '../services/session.service';
 import { getOneUserByEmail, saveOneUser } from '../services/user.service';
 import { router } from '../utils/router.util';
@@ -63,7 +63,7 @@ export const loginPOST: IHandlerResponse = async (req, res) => {
 
     console.log('lolo');
 
-    localsSetLogged(res, true);
+    localsSetIsLogged(res, true);
     sessionSetIsLogged(req, true);
     JWTSetToken(res, token);
 
@@ -77,7 +77,7 @@ export const loginPOST: IHandlerResponse = async (req, res) => {
 export const logoutGET: IHandlerResponse = async (req, res) => {
 
     JWTSetToken(res, '');
-    localsSetLogged(res, false);
+    localsSetIsLogged(res, false);
     sessionSetIsLogged(req, false);
 
     flashToasts(req, [{
