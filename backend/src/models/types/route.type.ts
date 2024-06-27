@@ -8,9 +8,11 @@ export type TRoute =
 
     | 'auth/registrarse'
     | '/auth/registrarse'
+    | '/react/registrarse'
 
     | 'auth/iniciar-sesion'
     | '/auth/iniciar-sesion'
+    | '/react/iniciar-sesion'
 
     | 'auth/cerrar-sesion'
     | '/auth/cerrar-sesion'

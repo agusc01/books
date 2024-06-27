@@ -14,6 +14,7 @@ import { localsSetIsLogged } from './services/locals.service';
 import { initSession, sessionGetIsLogged } from './services/session.service';
 import { router } from './utils/router.util';
 const flash = require('express-flash');
+const cors = require('cors');
 
 const methodOverride = require('method-override');
 
@@ -24,6 +25,7 @@ const app = express();
 const port = envConfig(Env.APP_PORT);
 const host = `${envConfig(Env.APP_HOST)}:${port}`;
 
+app.use(cors());
 app.use(flash());
 
 app.use(express.json());
@@ -57,7 +59,7 @@ app.use((req, res, next) => {
 app.use(router('/home'), async (req: express.Request, res: express.Response) => {
     return res.render(router('home'), { view: { title: "Libros | Home", }, });
 });
-app.use(router('/api'), JWTMiddleware, apiRouter);
+app.use(router('/api'), apiRouter);
 app.use(router('/libro'), isLoggedGuard, JWTMiddleware, bookRouter);
 app.use(router('/auth'), authRouter);
 

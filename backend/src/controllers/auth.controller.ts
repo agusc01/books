@@ -69,7 +69,44 @@ export const loginPOST: IHandlerResponse = async (req, res) => {
         text: 'Ha iniciado sesión',
         type: 'success',
     }]);
+
+    console.log({ payload });
+
     return res.redirect(router('/libro/listar'));
+};
+
+export const reactLoginPOST: IHandlerResponse = async (req, res) => {
+
+    const { email, password } = req.body;
+    const resp = await getOneUserByEmail(email);
+
+    if (resp.isError) {
+        return res.status(500).send({ user: resp.data });
+    }
+
+    const user = resp.data as IUser;
+    const match = await bcrypt.compare(password, user.password);
+
+    if (!match) {
+        return res.status(500).send({ user: String(envConfig(Env.DB_MSG_ERROR_LOGIN_USER)) });
+    }
+
+    const { _id } = user;
+    const payload = await JWTGenerate({ email, _id });
+
+    if (payload.isError) {
+        return res.status(500).send({ user: payload.data });
+    }
+
+    const token = payload.data;
+
+    localsSetIsLogged(res, true);
+    sessionSetIsLogged(req, true);
+    JWTSetToken(res, token);
+
+    console.log({ payload });
+
+    return res.status(200).send({ user: payload });
 };
 
 export const logoutGET: IHandlerResponse = async (req, res) => {
@@ -111,4 +148,20 @@ export const registerPOST: IHandlerResponse = async (req, res) => {
 
     flashToasts(req, [{ type: 'success', text: 'Se creó el usuario' }]);
     return res.redirect(router('/auth/iniciar-sesion'));
+};
+
+export const reactRegisterPOST: IHandlerResponse = async (req, res) => {
+
+    const { email, password } = req.body;
+
+    const salt = envConfig(Env.BCRYPT_SALT);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const resp = await saveOneUser({ email, password: hashedPassword });
+
+    if (resp.isError) {
+        return res.status(500).send({ error: resp.data });
+    }
+
+    return res.status(200).send({ user: 'Se creó el usuario' });
 };

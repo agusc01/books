@@ -46,12 +46,13 @@ export const saveOneBook = async (book: IBook): Promise<IResponseDb<IBook | stri
 
 export const updateOneBook = async (book: IBook): Promise<IResponseDb<IBook | string>> => {
     try {
+        console.log({ book });
         const bookFound = await Book.findById(book._id);
         if (!bookFound) {
             throw new Error(`El libro con el id ${book._id} no existe`);
         }
         await bookFound.updateOne(book);
-        return { isError: false, data: { ...bookFound, ...book } };
+        return { isError: false, data: { ...(bookFound as any)._doc, ...book } };
     } catch (e: any) {
         return { isError: true, data: `${msgErrorUpdate} ${takeMsgError(e)}.` };
     } finally { }

@@ -51,7 +51,8 @@ export const apiCreateBooksPOST: IHandlerResponse = async (req, res) => {
 export const apiUpdateBookPATCH: IHandlerResponse = async (req, res) => {
 
     if (!req.body.img) { req.body.img = 'fake-url'; }
-    req.body.id = req.params.id;
+    req.body._id = req.params.id;
+
     const resp = await updateOneBook(req.body);
 
     if (resp.isError) {
