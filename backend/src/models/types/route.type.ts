@@ -16,6 +16,7 @@ export type TRoute =
 
     | 'auth/cerrar-sesion'
     | '/auth/cerrar-sesion'
+    | '/react/cerrar-sesion'
 
     | 'libro/listar'
     | '/libro/listar'

@@ -81,7 +81,6 @@ export const updateBookPUT: IHandlerResponse = async (req, res) => {
     const resp = await updateOneBook(book);
 
     if (resp.isError) {
-        console.log('eroroosodfosd');
         flashToasts(req, [{ type: 'error', text: resp.data as string }]);
     } else {
         flashToasts(req, [{ type: 'success', text: 'Se modificó el libro' }]);

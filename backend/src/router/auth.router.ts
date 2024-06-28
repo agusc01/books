@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { loginGET, loginPOST, logoutGET, reactLoginPOST, reactRegisterPOST, registerGET, registerPOST } from "../controllers/auth.controller";
+import { loginGET, loginPOST, logoutGET, reactLoginPOST, reactLogoutGET, reactRegisterPOST, registerGET, registerPOST } from "../controllers/auth.controller";
 import { isLoggedGuard } from "../guards/is-logged.guard";
 import { isNotLoggedGuard } from "../guards/is-not-logged.guard";
 import { JWTMiddleware } from "../middlewares/jwt.middleware";
@@ -16,3 +16,4 @@ authRouter.get(router('/registrarse'), isNotLoggedGuard, registerGET);
 authRouter.post(router('/registrarse'), isNotLoggedGuard, registerValidation, validInputMiddleware, registerPOST);
 authRouter.post(router('/react/registrarse'), isNotLoggedGuard, registerValidation, validInputMiddleware, reactRegisterPOST);
 authRouter.get(router('/cerrar-sesion'), isLoggedGuard, JWTMiddleware, logoutGET);
+authRouter.get(router('/react/cerrar-sesion'), /* isLoggedGuard, JWTMiddleware, */ reactLogoutGET);

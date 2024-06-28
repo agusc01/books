@@ -4,8 +4,8 @@ import path from 'path';
 import { connectToMongoDB } from './config/db.config';
 import { checkEnvironments, envConfig } from './config/env.config';
 import { errorAPI, errorGet } from './controllers/error.controller';
-import { isLoggedGuard } from './guards/is-logged.guard';
-import { JWTMiddleware } from './middlewares/jwt.middleware';
+import { isLoggedGuard, reactIsLoggedGuard } from './guards/is-logged.guard';
+import { JWTMiddleware, reactJWTMiddleware } from './middlewares/jwt.middleware';
 import { Env } from './models/enums/env.enum';
 import { apiRouter } from './router/api.router';
 import { authRouter } from './router/auth.router';
@@ -25,7 +25,11 @@ const app = express();
 const port = envConfig(Env.APP_PORT);
 const host = `${envConfig(Env.APP_HOST)}:${port}`;
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
+
 app.use(flash());
 
 app.use(express.json());
@@ -59,7 +63,7 @@ app.use((req, res, next) => {
 app.use(router('/home'), async (req: express.Request, res: express.Response) => {
     return res.render(router('home'), { view: { title: "Libros | Home", }, });
 });
-app.use(router('/api'), apiRouter);
+app.use(router('/api'), reactIsLoggedGuard, reactJWTMiddleware, apiRouter);
 app.use(router('/libro'), isLoggedGuard, JWTMiddleware, bookRouter);
 app.use(router('/auth'), authRouter);
 

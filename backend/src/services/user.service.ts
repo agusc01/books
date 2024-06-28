@@ -17,7 +17,6 @@ export const getOneUserByEmail = async (email: string): Promise<IResponseDb<IUse
         if (!user) { throw new Error(`${msgErrorLoginUser}`); }
         return { isError: false, data: user };
     } catch (e: any) {
-        console.log({ a: e });
         return { isError: true, data: `${msgErrorRead} ${takeMsgError(e)}.` };
     } finally { }
 };

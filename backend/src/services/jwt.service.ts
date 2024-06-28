@@ -33,7 +33,6 @@ export const JWTGenerate = async ({ _id, email }: Partial<IUser>): Promise<IResp
 
 export const JWTGetPayLoad = async (req: any): Promise<IResponseDb<JWTPayload | string>> => {
     try {
-
         const jwt = JWTGetInCookie(req);
 
         if (!jwt) return { isError: true, data: 'No tiene autorización' };
@@ -49,9 +48,10 @@ export const JWTGetPayLoad = async (req: any): Promise<IResponseDb<JWTPayload | 
 
 
 export const JWTSetToken = (res: Response, token: string) => {
-    res.cookie('token', token, { httpOnly: true, secure: true });
+    res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'lax', path: '/' });
 };
 
 export const JWTGetInCookie = (req: Request): string => {
-    return req.headers.cookie?.split('token=')[1] ?? '';
+    const cookiesParciales = req.headers.cookie?.split('token=')[1] ?? '';
+    return cookiesParciales.split(';')[0];
 };

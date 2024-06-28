@@ -63,3 +63,51 @@ export const JWTMiddleware = async (req: Request, res: Response, next: any): Pro
     return;
 
 };
+
+export const reactJWTMiddleware = async (req: Request, res: Response, next: any): Promise<unknown> => {
+
+    const resp = await JWTGetPayLoad(req);
+
+    if (resp.isError) {
+        const { _id } = resp.data as any;
+
+        if (!_id) {
+            const toast: IToast = {
+                text: 'No tiene token valido',
+                type: 'warning'
+            };
+            cleanAllCookies(req, res);
+            return res.status(500).send({ msg: toast });
+        }
+
+        const respUser = await getOneUserById(_id);
+
+        if (respUser.isError || !respUser.data) {
+            const toast: IToast = {
+                text: 'Ya no existe el usuario',
+                type: 'error'
+            };
+            cleanAllCookies(req, res);
+            return res.status(500).send({ msg: toast });
+        }
+
+        let toast: IToast = {
+            text: resp.data as string,
+            type: 'error'
+        };
+
+        if ((resp.data as string)?.includes(' exp  claim timestamp check failed. ')) {
+            toast = {
+                text: 'Ha expirado la sessión, debe ingresar nuevamente',
+                type: 'info'
+            };
+        }
+
+        cleanAllCookies(req, res);
+        return res.status(500).send({ msg: toast });
+    }
+
+    next();
+    return;
+
+};

@@ -17,3 +17,12 @@ export const isLoggedGuard: IGuard = async (req, res, next) => {
 
     return res.redirect(router('/auth/iniciar-sesion'));
 };
+
+export const reactIsLoggedGuard: IGuard = async (req, res, next) => {
+
+    if (sessionGetIsLogged(req)) {
+        return next();
+    }
+
+    return res.status(500).send({ msg: 'no tiene credenciales' });
+};

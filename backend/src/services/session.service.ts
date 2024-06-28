@@ -7,7 +7,7 @@ const session = require('cookie-session');
 export const initSession = () => {
     return session({
         secret: String(envConfig(Env.SESSION_NAME)),
-        sameSite: 'Lax',
+        sameSite: 'lax',
     });
 };
 
